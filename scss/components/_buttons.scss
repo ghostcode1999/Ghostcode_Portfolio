@@ -1,0 +1,85 @@
+// COMPONENTS
+//==========================================================
+/*------------------
+    #BUTTONS
+------------------*/
+
+@use "../helpers" as *;
+
+// Base styles: basic classes //
+
+.#{$prefix}btn {
+  --button-padding: #{$button-padding};
+  --button-border: #{$button-border};
+  --button-border-radius: #{$button-border-radius};
+  --button-background: #{$button-background};
+  --button-color: #{$button-color};
+  --button-font-family: #{$button-font-family};
+  --button-font-size: #{$button-font-size};
+  --button-font-weight: #{$button-font-weight};
+  --button-text-transform: #{$button-text-transform};
+
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: var(--button-padding);
+  border: var(--button-border);
+  border-radius: var(--button-border-radius);
+  background: var(--button-background);
+  color: var(--button-color);
+  font-family: var(--button-font-family);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: 1;
+  text-transform: var(--button-text-transform);
+  text-decoration: none;
+  letter-spacing: 1px;
+  box-shadow: $shadow-200;
+  cursor: pointer;
+  transition: $transition-400;
+
+  // Alternate buttons: modifiers //
+  &[data-type="primary"] {
+    --button-background: #{$button-primary-background};
+
+    background-position: center;
+    background-size: calc(100% + 2px) 100%;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: $gradient-100;
+      border-radius: $radius-100;
+      filter: blur(8px);
+      transition: $transition-400;
+    }
+
+    &:is(:hover, :focus-visible, .is-active) {
+      scale: 0.95;
+
+      &::before {
+        filter: blur(2px);
+      }
+    }
+  }
+
+  &[data-size="sm"] {
+    .btn-inner {
+      font-size: $fs-200;
+    }
+  }
+}
+
+.btn-inner {
+  position: relative;
+  z-index: 2;
+  padding: $em-4 $em-6;
+  border-radius: $radius-100;
+  background: $clr-neutral-900;
+  font-size: $fs-400;
+  font-weight: $fw-extrabold;
+}

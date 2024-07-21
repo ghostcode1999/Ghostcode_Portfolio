@@ -1,0 +1,562 @@
+// HELPERS
+//===========================================================
+//## VARIABLES
+//-----------------------------------------------------------
+
+//<TIP>: Variables naming should follow the lowercase hyphen-delimited convention
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $btn-disabled-color
+
+//* Prefix For Classes Names
+//------------------------
+//<TIP>: Format: prefix-
+$prefix: "" !default;
+
+//* Media Queries
+//------------------------
+/// Breakpoint list
+///
+/// Name your breakpoints in a way that creates a ubiquitous language
+/// across team members. It will improve communication between
+/// stakeholders, designers, developers, and testers.
+///
+/// @type Map
+$breakpoints: (
+  sm: 576px,
+  // 36em
+  md: 768px,
+  // 48em
+  lg: 992px,
+  // 62em
+  xl: 1200px,
+  // 75em
+  xxl: 1400px,
+  // 87.5em
+) !default;
+
+/// Customize the media type (for example: `@media screen` or `@media print`)
+/// By default the manager uses an "all" media type (`@media all and …`)
+///
+/// If you want to override the media type, you can use this option.
+/// @example scss
+///   @use 'path/to/mq' with ($media-type: 'screen');
+///
+/// @type String
+$media-type: all !default;
+
+/// Show breakpoints in the top right corner
+///
+/// If you want to display the currently active breakpoint in the top
+/// right corner of your site during development, add the breakpoints
+/// to this list, ordered by width. For example: (sm, md, lg).
+///
+/// @example scss
+///   @use 'path/to/mq' with ($show-breakpoints: (sm, md, lg));
+///
+///
+/// @type map
+$show-breakpoints: (sm , md, lg, xl, xxl) !default;
+
+//* Colors
+//------------------------
+// Global color variables
+//--------- NEUTRAL -----------
+$-clr-white: hsl(0 0% 100%);
+$-clr-gray-100: hsl(274 100% 93%);
+$-clr-gray-200: hsl(234 100% 89%);
+$-clr-gray-300: hsl(0 0% 70%);
+$-clr-gray-400: hsl(0 0% 60%);
+$-clr-gray-500: hsl(0 0% 50%);
+$-clr-gray-600: hsl(0 0% 40%);
+$-clr-gray-700: hsl(0 0% 30%);
+$-clr-gray-800: hsl(0 0% 17.5%);
+$-clr-gray-900: hsl(253 74% 7%);
+$-clr-black: hsl(0 0% 0%);
+//--------- SKYBLUE -----------------
+$-clr-skyblue-100: hsl(190 100% 95%);
+$-clr-skyblue-200: hsl(190 100% 82.5%);
+$-clr-skyblue-300: hsl(190 100% 70%);
+$-clr-skyblue-400: hsl(190 100% 60%);
+$-clr-skyblue-500: hsl(190 100% 50%);
+$-clr-skyblue-600: hsl(190 100% 40%);
+$-clr-skyblue-700: hsl(190 100% 30%);
+$-clr-skyblue-800: hsl(190 100% 17.5%);
+$-clr-skyblue-900: hsl(190 100% 7.5%);
+//--------- PINK ------------------
+$-clr-pink-100: hsl(317 100% 95%);
+$-clr-pink-200: hsl(317 100% 82.5%);
+$-clr-pink-300: hsl(317 100% 70%);
+$-clr-pink-400: hsl(317 100% 58%);
+$-clr-pink-500: hsl(317 100% 50%);
+$-clr-pink-600: hsl(317 100% 40%);
+$-clr-pink-700: hsl(317 100% 30%);
+$-clr-pink-800: hsl(317 100% 17.5%);
+$-clr-pink-900: hsl(317 100% 7.5%);
+
+// Color maps for creating utility classes
+$light: (
+  "neutral": (
+    "000": $-clr-white,
+    "100": $-clr-gray-100,
+    "200": $-clr-gray-200,
+    "300": $-clr-gray-300,
+    "400": $-clr-gray-400,
+    "500": $-clr-gray-500,
+    "600": $-clr-gray-600,
+    "700": $-clr-gray-700,
+    "800": $-clr-gray-800,
+    "900": $-clr-gray-900,
+    "1000": $-clr-black,
+  ),
+  "primary": (
+    "100": $-clr-skyblue-100,
+    "200": $-clr-skyblue-200,
+    "300": $-clr-skyblue-300,
+    "400": $-clr-skyblue-400,
+    "500": $-clr-skyblue-500,
+    "600": $-clr-skyblue-600,
+    "700": $-clr-skyblue-700,
+    "800": $-clr-skyblue-800,
+    "900": $-clr-skyblue-900,
+  ),
+  "accent": (
+    "100": $-clr-pink-100,
+    "200": $-clr-pink-200,
+    "300": $-clr-pink-300,
+    "400": $-clr-pink-400,
+    "500": $-clr-pink-500,
+    "600": $-clr-pink-600,
+    "700": $-clr-pink-700,
+    "800": $-clr-pink-800,
+    "900": $-clr-pink-900,
+  ),
+);
+
+$dark: (
+  "neutral": (
+    "1000": $-clr-white,
+    "900": $-clr-gray-100,
+    "800": $-clr-gray-200,
+    "700": $-clr-gray-300,
+    "600": $-clr-gray-400,
+    "500": $-clr-gray-500,
+    "400": $-clr-gray-600,
+    "300": $-clr-gray-700,
+    "200": $-clr-gray-800,
+    "100": $-clr-gray-900,
+    "000": $-clr-black,
+  ),
+  "primary": (
+    "900": $-clr-skyblue-900,
+    "800": $-clr-skyblue-800,
+    "700": $-clr-skyblue-700,
+    "600": $-clr-skyblue-600,
+    "500": $-clr-skyblue-500,
+    "400": $-clr-skyblue-400,
+    "300": $-clr-skyblue-300,
+    "200": $-clr-skyblue-200,
+    "100": $-clr-skyblue-100,
+  ),
+  "accent": (
+    "900": $-clr-pink-900,
+    "800": $-clr-pink-800,
+    "700": $-clr-pink-700,
+    "600": $-clr-pink-600,
+    "500": $-clr-pink-500,
+    "400": $-clr-pink-400,
+    "300": $-clr-pink-300,
+    "200": $-clr-pink-200,
+    "100": $-clr-pink-100,
+  ),
+);
+
+// Color variables for general use in the codebase
+$clr-neutral-000: var(--clr-neutral-000);
+$clr-neutral-100: var(--clr-neutral-100);
+$clr-neutral-200: var(--clr-neutral-200);
+$clr-neutral-300: var(--clr-neutral-300);
+$clr-neutral-400: var(--clr-neutral-400);
+$clr-neutral-500: var(--clr-neutral-500);
+$clr-neutral-600: var(--clr-neutral-600);
+$clr-neutral-700: var(--clr-neutral-700);
+$clr-neutral-800: var(--clr-neutral-800);
+$clr-neutral-900: var(--clr-neutral-900);
+$clr-neutral-1000: var(--clr-neutral-1000);
+
+$clr-primary-100: var(--clr-primary-100);
+$clr-primary-200: var(--clr-primary-200);
+$clr-primary-300: var(--clr-primary-300);
+$clr-primary-400: var(--clr-primary-400);
+$clr-primary-500: var(--clr-primary-500);
+$clr-primary-600: var(--clr-primary-600);
+$clr-primary-700: var(--clr-primary-700);
+$clr-primary-800: var(--clr-primary-800);
+$clr-primary-900: var(--clr-primary-900);
+
+$clr-accent-100: var(--clr-accent-100);
+$clr-accent-200: var(--clr-accent-200);
+$clr-accent-300: var(--clr-accent-300);
+$clr-accent-400: var(--clr-accent-400);
+$clr-accent-500: var(--clr-accent-500);
+$clr-accent-600: var(--clr-accent-600);
+$clr-accent-700: var(--clr-accent-700);
+$clr-accent-800: var(--clr-accent-800);
+$clr-accent-900: var(--clr-accent-900);
+
+// Base used colors
+$clr-text-default: $clr-neutral-200;
+$clr-bg-default: $clr-neutral-900;
+$clr-text-interactive-default: inherit;
+$clr-text-interactive-hover: $clr-primary-500;
+
+//* Typography
+//------------------------
+// Font families map for creating utility classes
+$font-families: (
+  "base": "Poppins, sans-serif",
+);
+
+// Font family variables for general use in the codebase
+$ff-base: var(--ff-base);
+$ff-accent: MuseoModerno, cursive;
+
+// Font weights map for creating utility classes
+$font-weights: (
+  "light": 300,
+  "normal": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extrabold": 800,
+  "black": 900,
+);
+
+// Font weight variables for general use in the codebase
+$fw-light: var(--fw-light);
+$fw-normal: var(--fw-normal);
+$fw-medium: var(--fw-medium);
+$fw-semibold: var(--fw-semibold);
+$fw-bold: var(--fw-bold);
+$fw-extrabold: var(--fw-extrabold);
+$fw-black: var(--fw-black);
+
+// Font sizes map for creating utility classes
+// 1cqi = 1% of a container's inline size.
+$type-scale: (
+  100: clamp(0.64rem, 0.6549rem + -0.0192cqi, 0.651rem),
+  200: clamp(0.7813rem, 0.7747rem + 0.0326cqi, 0.8rem),
+  300: clamp(0.9375rem, 0.9158rem + 0.1087cqi, 1rem),
+  400: clamp(1.125rem, 1.0815rem + 0.2174cqi, 1.25rem),
+  500: clamp(1.35rem, 1.2761rem + 0.3696cqi, 1.5625rem),
+  600: clamp(1.62rem, 1.5041rem + 0.5793cqi, 1.9531rem),
+  700: clamp(1.944rem, 1.771rem + 0.8651cqi, 2.4414rem),
+  800: clamp(2.3328rem, 2.0827rem + 1.2504cqi, 3.0518rem),
+  900: clamp(2.7994rem, 2.4462rem + 1.7658cqi, 3.8147rem),
+  1000: clamp(3.3592rem, 2.8691rem + 2.4507vi, 4.7684rem),
+);
+
+// Font sizes variables for general use in the codebase
+$fs-100: var(--fs-100);
+$fs-200: var(--fs-200);
+$fs-300: var(--fs-300);
+$fs-400: var(--fs-400);
+$fs-500: var(--fs-500);
+$fs-600: var(--fs-600);
+$fs-700: var(--fs-700);
+$fs-800: var(--fs-800);
+$fs-900: var(--fs-900);
+$fs-1000: var(--fs-1000);
+
+$letter-spacing-loose: 2px;
+
+//* Spacing and sizing
+//------------------------
+// Sizes map for creating utility classes
+$sizes-rem: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 0.75rem,
+  4: 1rem,
+  5: 1.25rem,
+  6: 1.5rem,
+  7: 1.75rem,
+  8: 2rem,
+  9: 2.5rem,
+  10: 3rem,
+  11: 4rem,
+  12: 5rem,
+  13: 6rem,
+  14: 8rem,
+  15: 10rem,
+);
+
+$sizes-em: (
+  0: 0,
+  1: 0.25em,
+  2: 0.5em,
+  3: 0.75em,
+  4: 1em,
+  5: 1.25em,
+  6: 1.5em,
+  7: 1.75em,
+  8: 2em,
+  9: 2.5em,
+  10: 3em,
+  11: 4em,
+  12: 5em,
+  13: 6em,
+  14: 8em,
+  15: 10em,
+);
+
+// Sizes variables general use in the code base
+$rem-0: var(--size-rem-0);
+$rem-1: var(--size-rem-1);
+$rem-2: var(--size-rem-2);
+$rem-3: var(--size-rem-3);
+$rem-4: var(--size-rem-4);
+$rem-5: var(--size-rem-5);
+$rem-6: var(--size-rem-6);
+$rem-7: var(--size-rem-7);
+$rem-8: var(--size-rem-8);
+$rem-9: var(--size-rem-9);
+$rem-10: var(--size-rem-10);
+$rem-11: var(--size-rem-11);
+$rem-12: var(--size-rem-12);
+$rem-13: var(--size-rem-13);
+$rem-14: var(--size-rem-14);
+$rem-15: var(--size-rem-15);
+
+$em-0: var(--size-em-0);
+$em-1: var(--size-em-1);
+$em-2: var(--size-em-2);
+$em-3: var(--size-em-3);
+$em-4: var(--size-em-4);
+$em-5: var(--size-em-5);
+$em-6: var(--size-em-6);
+$em-7: var(--size-em-7);
+$em-8: var(--size-em-8);
+$em-9: var(--size-em-9);
+$em-10: var(--size-em-10);
+$em-11: var(--size-em-11);
+$em-12: var(--size-em-12);
+$em-13: var(--size-em-13);
+$em-14: var(--size-em-14);
+$em-15: var(--size-em-15);
+
+//* Theme
+//------------------------
+$scheme-color: light;
+$active-theme: $light;
+$enable-mq-dark-mode: false;
+
+//* Borders
+//------------------------
+$border-radius: (
+  "100": $em-15,
+);
+
+$radius-100: var(--radius-100);
+
+//* Box Shadows
+//------------------------
+$shadows: (
+  "100":
+    "0 16px 24px rgb(0 0 0 / 25%), 0 24px 40px rgb(0 0 0 / 25%), 0 60px 80px rgb(0 0 0 / 60%)",
+  "200":
+    "0 16px 24px -8px rgb(0 0 0 / 50%), 0 24px 40px -16px rgb(0 0 0 / 50%), 0 60px 80px -40px #000",
+);
+
+$shadow-100: var(--shadow-100);
+$shadow-200: var(--shadow-200);
+
+//* Gradients
+//-----------------
+$gradients: (
+  "100":
+    radial-gradient(
+      circle farthest-corner at 0% 0%,
+      hsl(317, 100%, 58%),
+      hsl(202, 100%, 60%)
+    ),
+);
+
+$gradient-100: var(--gradient-100);
+
+//* Transitions
+//-----------------
+$transitions: (
+  "250": 250ms ease,
+  "400": 400ms ease,
+);
+
+$transition-250: var(--transition-250);
+$transition-400: var(--transition-400);
+
+//* Body
+//------------------------------
+$body-font-family: $ff-base;
+$body-font-size: $fs-400;
+$body-line-height: 1.5;
+$body-font-weight: $fw-normal;
+$body-text-color: $clr-text-default;
+$body-background-color: $clr-bg-default;
+
+//* Links
+//-----------------------------
+$link-color: $clr-text-interactive-default;
+$link-color-hover: $clr-text-interactive-hover;
+
+//* Headings
+//---------------------------
+$heading-font-family: $ff-accent;
+$heading-color-default: $clr-neutral-100;
+$heading-font-weight: $fw-black;
+$heading-letter-spacing: $letter-spacing-loose;
+$heading-line-height: 1.3;
+$heading-text-transform: uppercase;
+
+$heading-1-font-size: $fs-900;
+$heading-1-color: $heading-color-default;
+$heading-2-font-size: $fs-800;
+$heading-2-color: $heading-color-default;
+$heading-3-font-size: $fs-700;
+$heading-3-color: $heading-color-default;
+
+//* Layout
+//---------------------
+$grid-gap: $rem-6;
+$flex-group-gap: $rem-4;
+
+//* Wrapper
+//---------------------------
+$wrapper-padding-inline: $rem-4;
+$wrapper-max-width: 100%;
+$wrapper-max-width-narrow: 40rem;
+$wrapper-max-width-wide: 75rem;
+
+$wrapper-max-width-sm: 33.75rem;
+$wrapper-max-width-md: 45rem;
+$wrapper-max-width-lg: 60rem;
+$wrapper-max-width-xl: 71.25rem;
+$wrapper-max-width-xxl: 82.5rem;
+
+//* Flow
+//----------------------------
+$flow-spacer: $rem-6;
+
+//#GRID SYSTEM
+$col-count: 12;
+$row-gap: $rem-4;
+$col-gap: $rem-4;
+
+$row-cols: (
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "6": 6,
+  "12": 12,
+);
+
+$start-cols: (
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "11": 11,
+);
+
+$end-cols: (
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "11": 11,
+  "12": 12,
+  "all": -1,
+);
+
+$col-widths: (
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "11": 11,
+  "12": 12,
+  "fill": 12,
+);
+
+$content-max-width: $wrapper-max-width;
+$content-max-width-sm: $wrapper-max-width-sm;
+$content-max-width-md: $wrapper-max-width-md;
+$content-max-width-lg: $wrapper-max-width-lg;
+$content-max-width-xl: $wrapper-max-width-xl;
+$content-max-width-xxl: $wrapper-max-width-xxl;
+
+//* Primary Header
+//----------------------------
+$primary-header-position: sticky;
+$primary-header-background: linear-gradient(
+  to right,
+  var(--clr-accent-500),
+  var(--clr-primary-500)
+);
+$primary-header-color: $clr-neutral-100;
+$primary-header-padding: $em-4 0;
+$primary-header-jusitifcation: space-between;
+$primary-header-alignment: center;
+
+//* Primary Navigation
+//-----------------------------
+$navigation-color: $primary-header-color;
+$navigation-color-hover: $clr-primary-500;
+$navigation-font-size: $fs-300;
+$navigation-font-weight: $fw-semibold;
+$navigation-text-transform: uppercase;
+$navigation-gap: $rem-6;
+
+//* Primary Footer
+//---------------------------
+$footer-background-color: $clr-primary-300;
+$footer-text-color: $clr-primary-900;
+$footer-link-color: $clr-neutral-100;
+$footer-link-color-hover: $clr-primary-200;
+$footer-link-text-decoration: none;
+
+//* Buttons
+//---------------------------
+$button-padding: 2px;
+$button-border: 0;
+$button-border-radius: $radius-100;
+$button-background: transparent;
+$button-color: $clr-neutral-000;
+$button-font-family: $body-font-family;
+$button-font-size: $fs-400;
+$button-font-weight: $fw-bold;
+$button-text-transform: uppercase;
+
+$button-primary-background: $gradient-100;
+
+//* Sections
+//---------------------------
+$hero-padding-block: clamp(15rem, 15vh, 20rem);
+$section-padding-block: clamp(5rem, 10vh, 8rem);

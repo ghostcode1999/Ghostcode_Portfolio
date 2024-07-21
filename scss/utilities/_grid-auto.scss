@@ -1,0 +1,36 @@
+// UTILITIES
+//===========================================================
+/*------------------
+    #GRID AUTO
+------------------*/
+
+@use "helpers" as *;
+
+@layer utilities {
+  %grid-auto {
+    display: grid;
+    gap: var(--_grid-gap, $grid-gap);
+  }
+
+  .#{$prefix}grid-auto {
+    --_layout-threshold: 250px;
+
+    &-fit {
+      @extend %grid-auto;
+
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(var(--_layout-threshold), 100%), 1fr)
+      );
+    }
+
+    &-fill {
+      @extend %grid-auto;
+
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(min(var(--_layout-threshold), 100%), 1fr)
+      );
+    }
+  }
+}

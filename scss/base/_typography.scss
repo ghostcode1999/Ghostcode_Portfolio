@@ -1,0 +1,29 @@
+// BASE
+//===========================================================
+/*------------------
+    #TYPOGRAPHY
+------------------*/
+
+@use "../helpers" as *;
+
+@layer base {
+  :is(h1, h2, h3, h4, h5, h6) {
+    font-family: $ff-accent;
+  }
+
+  h1 {
+    font-size: $fs-800;
+  }
+
+  h2 {
+    font-size: $fs-700;
+  }
+
+  h3 {
+    font-size: $fs-600;
+  }
+
+  h4 {
+    font-size: $fs-500;
+  }
+}

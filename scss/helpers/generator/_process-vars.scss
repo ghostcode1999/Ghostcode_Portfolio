@@ -1,0 +1,31 @@
+// Helpers
+// Generator
+// ------------------------
+//***  Process Vars ***//
+//
+@use "get-namespace" as *;
+
+/// A reusable looper that generates custom property rules
+///
+/// @param {map} $passed-vars - A collection of CSS keys and values
+///
+
+@mixin process-vars($passed-vars) {
+  $namespace: get-namespace("css-vars");
+
+  @each $var, $items in $passed-vars {
+    @if (type-of($items) != "map") {
+      --#{$namespace + $var}: #{$items};
+    } @else {
+      @each $item-key, $item-value in $items {
+        @if (type-of($item-value) == "map") {
+          @each $key, $value in $item-value {
+            --#{$namespace + $var + '-' + $item-key + "-" + $key}: #{$value};
+          }
+        } @else {
+          --#{$namespace + $var + '-' + $item-key}: #{$item-value};
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,163 @@
+// HELPERS
+//===========================================================
+//## MEDIA QUERIES MANAGER
+//-----------------------------------------------------------
+
+//*** Variables
+@use "variables" as *;
+//*** Functions
+@use "functions" as *;
+
+/// Media Query mixin
+///
+/// @param {String | Boolean} $from [false] - One of $breakpoints
+/// @param {String | Boolean} $to [false] - One of $breakpoints
+/// @param {String | Boolean} $and [false] - Additional media query parameters
+/// @param {String} $media-type [$media-type] - Media type: screen, print…
+///
+/// @ignore Undocumented API, for advanced use only:
+/// @ignore @param {Map} $breakpoints [$breakpoints]
+///
+/// @content styling rules, wrapped into a @media query when $responsive is true
+///
+/// @requires {Variable} $media-type
+/// @requires {Variable} $breakpoints
+/// @requires {function} px2em
+/// @requires {function} get-breakpoint-width
+///
+/// @example scss
+///  .element {
+///    @include mq($from: sm) {
+///      color: red;
+///    }
+///    @include mq($until: md) {
+///      color: blue;
+///    }
+///    @include mq(sm, lg) {
+///      color: green;
+///    }
+///    @include mq($from: md, $and: '(orientation: landscape)') {
+///      color: teal;
+///    }
+///    @include mq(950px) {
+///      color: hotpink;
+///    }
+///    @include mq(sm, $media-type: screen) {
+///      color: hotpink;
+///    }
+///    // Advanced use:
+///    $my-breakpoints: (L: 900px, XL: 1200px);
+///    @include mq(L, $breakpoints: $my-breakpoints) {
+///      color: hotpink;
+///    }
+///  }
+@mixin mq(
+  $from: false,
+  $to: false,
+  $and: false,
+  $media-type: $media-type,
+  $breakpoints: $breakpoints
+) {
+  $min-width: 0;
+  $max-width: 0;
+  $media-query: "";
+
+  // from: this breakpoint inclusive
+  @if $from {
+    @if (type-of($from) == number) {
+      $min-width: px2em($from);
+    } @else {
+      $min-width: px2em(get-breakpoint-width($from, $breakpoints));
+    }
+  }
+  // to: that breakpoint exclusive
+  @if $to {
+    @if (type-of($to) == number) {
+      $max-width: px2em($to);
+    } @else {
+      $max-width: px2em(get-breakpoint-width($to, $breakpoints));
+      // - 0.01em
+    }
+  }
+
+  @if ($min-width != 0) {
+    $media-query: "#{$media-query} and (width >= #{$min-width})";
+  }
+  @if ($max-width != 0) {
+    $media-query: "#{$media-query} and (width < #{$max-width})";
+  }
+  @if $and {
+    $media-query: "#{$media-query} and #{$and}";
+  }
+
+  // Remove unnecessary media prefix "all and "
+  @if ($media-type == "all" and $media-query != "") {
+    $media-type: "";
+    $media-query: str-slice(unquote($media-query), 6);
+  }
+
+  @media #{$media-type + $media-query} {
+    @content;
+  }
+}
+
+/// Add a breakpoint
+///
+/// @param {String} $name - Name of the breakpoint
+/// @param {Number} $width - Width of the breakpoint
+///
+/// @requires {Variable} $breakpoints
+///
+/// @example scss - Usage
+///  @include add-breakpoint(xs, 100px);
+///  @include mq(xs) {}
+///
+@mixin add-breakpoint($name, $width) {
+  $new-breakpoint: (
+    $name: $width,
+  );
+
+  $breakpoints: map-merge($breakpoints, $new-breakpoint) !global;
+  $breakpoints: map-sort-by-value($breakpoints) !global;
+}
+
+/// Show the active breakpoint in the top right corner of the viewport
+///
+/// @param {List} $show-breakpoints [$show-breakpoints] - List of breakpoints to show in the top right corner
+/// @param {Map} $breakpoints [$breakpoints] - Breakpoint names and sizes
+///
+/// @requires {Variable} $breakpoints
+/// @requires {Variable} $show-breakpoints
+///
+/// @example scss - Usage
+///  // Show breakpoints using global settings
+///  @include show-breakpoints;
+///
+///  // Show breakpoints using custom settings
+///  @include show-breakpoints((L, XL), (S: 300px, L: 800px, XL: 1200px));
+@mixin show-breakpoints(
+  $show-breakpoints: $show-breakpoints,
+  $breakpoints: $breakpoints
+) {
+  body:before {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 9999;
+    padding: 4px 8px;
+    border: 2px solid $clr-primary-400;
+    background-color: hsla(0, 0%, 100%, 0.6);
+    color: $clr-neutral-900;
+    font-size: $fs-200;
+    font-weight: $fw-semibold;
+    pointer-events: none;
+
+    // Loop through the breakpoints that should be shown
+    @each $show-breakpoint in $show-breakpoints {
+      $width: get-breakpoint-width($show-breakpoint, $breakpoints);
+      @include mq($show-breakpoint, $breakpoints: $breakpoints) {
+        content: "#{$show-breakpoint} ≥ #{$width} (#{px2em($width)})";
+      }
+    }
+  }
+}

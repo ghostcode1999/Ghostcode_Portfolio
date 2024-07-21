@@ -1,0 +1,90 @@
+// PAGES
+//==========================================================
+/*=========================================================
+    #PAGES: GLOBAL RULES
+===========================================================*/
+
+// This file can contain global rules shared by all pages
+@use "helpers" as *;
+
+body {
+  &:has(.preloader.is-hidden) {
+    overflow: auto;
+  }
+
+  &:has(.popup.is-shown) {
+    overflow-y: hidden;
+  }
+}
+
+.progress-line {
+  position: fixed;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  z-index: 999;
+  height: 2px;
+  background-color: $clr-primary-400;
+  width: 100%;
+  transform-origin: left;
+
+  scale: 0 1;
+  animation: scaleX linear;
+  animation-timeline: scroll();
+}
+
+@keyframes scaleX {
+  100% {
+    scale: 1 1;
+  }
+}
+
+.section {
+  padding-block: $section-padding-block;
+}
+
+.section__header {
+  gap: $rem-4;
+  margin-block-end: $rem-10;
+  text-align: center;
+
+  @include mq(md) {
+    --start: 4;
+  }
+}
+
+.section__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: $rem-4;
+  row-gap: $rem-3;
+  font-weight: $fw-black;
+  text-transform: uppercase;
+}
+
+.bg-shape {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: -1;
+  pointer-events: none;
+  object-fit: fill;
+}
+
+.text-gradient {
+  background: $gradient-100;
+  background-clip: text;
+  color: transparent;
+}
+
+.back-top-button {
+  position: fixed;
+  inset-block-end: -100px;
+  inset-inline-end: 20px;
+  z-index: 97;
+
+  body.is-scrolled & {
+    inset-block-end: 20px;
+  }
+}

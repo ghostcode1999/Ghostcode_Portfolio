@@ -1,0 +1,61 @@
+// HELPERS
+//## GENERATOR
+//===========================================================
+//### GENERATE CSS VARS
+//-----------------------------------------------------------
+
+@use "../variables" as *;
+@use "process-vars" as *;
+
+/// Generate CSS Custom variables
+/// Will either generate a simple collection of CSS Custom Properties
+/// or if `themes` are defined, it’ll loop each theme and generate Custom Properties for each theme
+///
+/// @param {map} $vars - A collection of keys and values
+///
+
+@mixin generate-css-vars($vars) {
+  @if ($vars) {
+    /// First, we look for themes to see if we need to do extra work
+    $themes: map-get($vars, "themes");
+
+    /// Still generate the custom properties but remove the themes from the $vars
+    /// so we don't confuse the generator
+    :root {
+      @include process-vars(map-remove($vars, "themes"));
+    }
+
+    @if ($themes) {
+      @each $name, $theme in $themes {
+        @if ($name != "default") {
+          /// If theme is not the default one
+          $prefix: map-get($theme, "prefix");
+          $prefers-color-scheme: map-get($theme, "prefers-color-scheme");
+          $tokens: map-get($theme, "tokens");
+
+          /// A theme can be defined without a prefix, but we need one to create
+          /// a valid CSS rule, so we’ll set it as :root
+          @if not($prefix) {
+            $prefix: ":root";
+          }
+
+          /// If a prefers-color-scheme is set and enable-mq-dark-mode is enabled, that needs to be a media query
+          @if ($prefers-color-scheme and $enable-mq-dark-mode) {
+            @media (prefers-color-scheme: #{$prefers-color-scheme}) {
+              #{$prefix} {
+                @include process-vars($tokens);
+              }
+            }
+          } @else {
+            /// If not, we can generate the vars within the prefix only instead
+            @if not($prefers-color-scheme) {
+              #{$prefix} {
+                @include process-vars($tokens);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

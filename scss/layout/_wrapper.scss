@@ -1,0 +1,46 @@
+// LAYOUT
+//=======================================================
+/*------------------
+    #WRAPPER
+------------------*/
+
+@use "../helpers" as *;
+
+@layer layout {
+  .#{$prefix}wrapper {
+    --wrapper-max-width: #{$wrapper-max-width};
+    --wrapper-padding: #{$wrapper-padding-inline} * 2;
+
+    width: min(100% - var(--wrapper-padding), var(--wrapper-max-width));
+    margin-inline: auto;
+
+    &[data-type="narrow"] {
+      --wrapper-max-width: #{$wrapper-max-width-narrow};
+    }
+    &[data-type="wide"] {
+      --wrapper-max-width: #{$wrapper-max-width-wide};
+    }
+    &[data-type="full-bleed"] {
+      --wrapper-max-width: 100%;
+      --wrapper-padding: 0;
+    }
+
+    &:not([data-type]) {
+      @include mq(sm) {
+        --wrapper-max-width: #{$wrapper-max-width-sm};
+      }
+      @include mq(md) {
+        --wrapper-max-width: #{$wrapper-max-width-md};
+      }
+      @include mq(lg) {
+        --wrapper-max-width: #{$wrapper-max-width-lg};
+      }
+      @include mq(xl) {
+        --wrapper-max-width: #{$wrapper-max-width-xl};
+      }
+      @include mq(xxl) {
+        --wrapper-max-width: #{$wrapper-max-width-xxl};
+      }
+    }
+  }
+}

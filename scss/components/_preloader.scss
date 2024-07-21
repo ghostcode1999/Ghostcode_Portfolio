@@ -1,0 +1,30 @@
+// COMPONENTS
+//==========================================================
+/*---------------------
+    #PRELOADER
+----------------------*/
+
+@use "helpers" as *;
+
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    background: $clr-neutral-900;
+
+    &.is-hidden {
+        display: none;
+    }
+
+    span {
+        display: inline-block;
+        width: 50px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 8px solid $clr-neutral-200;
+        border-inline-end-color: transparent;
+        animation: preload 1s linear infinite;
+    }
+}

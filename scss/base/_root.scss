@@ -1,0 +1,15 @@
+// BASE
+//===========================================================
+/*------------------
+    #ROOT
+------------------*/
+
+@use "helpers" as *;
+
+@layer root {
+  /// Run the vars generator, regardless of whether they are defined,
+  /// but only if they are enabled
+  @if ($generate-css-vars == true) {
+    @include generate-css-vars($css-vars);
+  }
+}

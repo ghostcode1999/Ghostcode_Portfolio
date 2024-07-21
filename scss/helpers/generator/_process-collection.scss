@@ -1,0 +1,63 @@
+// HELPERS
+//## GENERATOR
+//===========================================================
+//### PROCESS COLLECTION
+//-----------------------------------------------------------
+
+@use "../core-config" as *;
+@use "get-namespace" as *;
+@use "generate-css" as *;
+
+/// Takes a passed collection and finds utility classes to generate.
+/// It’ll loop through breakpoints, too and generate responsive utilities
+/// where required
+///
+/// @param {map} $collection - The '$ghosto-config' config item
+/// @param {string} $prefix - An optional prefix that is stuck to the front of selectors
+/// @param {string} $selector - The CSS selector that should be generated
+/// @param {bool} $is-breakpoint - A flag for the responsive generation to use to determine whether to run or not
+///
+
+@mixin process-collection($collection, $prefix, $selector, $is-breakpoint) {
+  $items: map-get($collection, "items");
+  $output: map-get($collection, "output");
+  $property: map-get($collection, "property");
+  $use-css-vars: map-get($collection, "css-vars");
+  $vars-key: "";
+
+  $selector: get-namespace("classes") + $selector;
+
+  /// If this collection is using CSS vars, the items come from the
+  /// 'css-vars' map in $ghosto-config
+  @if ($use-css-vars) {
+    $vars: map-get($core-config, "css-vars");
+    $vars-key: map-get($collection, "items");
+
+    $items: map-get($vars, $vars-key);
+  }
+
+  /// It'll only run if $items and $property aren't null.
+  @if ($property and $items) {
+    @if ($output == "responsive") {
+      @include generate-css(
+        #{$selector + $prefix},
+        $property,
+        $items,
+        $use-css-vars,
+        $vars-key
+      );
+    }
+
+    @if ($output == "standard") {
+      @if ($is-breakpoint != true) {
+        @include generate-css(
+          #{$selector + $prefix},
+          $property,
+          $items,
+          $use-css-vars,
+          $vars-key
+        );
+      }
+    }
+  }
+}

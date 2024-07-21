@@ -1,0 +1,21 @@
+// UTILITIES
+//===========================================================
+/*------------------
+    #CLUSTER
+------------------*/
+
+
+@use "helpers" as *;
+
+@layer utilities {
+  .#{$prefix}cluster {
+    --_layout-gap: 0;
+    --_layout-align: center;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: var(--_layout-align);
+    gap: var(--_layout-gap, $flex-group-gap);
+  }
+}

@@ -1,0 +1,20 @@
+// UTILITIES
+//===========================================================
+/*------------------
+    #HAS PSEUDO
+------------------*/
+
+@use "helpers" as *;
+
+@layer utilities {
+  .has-pseudo {
+    position: relative;
+    z-index: 1;
+
+    &:is(::before, ::after) {
+      content: "";
+      position: absolute;
+      z-index: -1;
+    }
+  }
+}

@@ -1,0 +1,227 @@
+// HELPERS
+//===========================================================
+//## FUNCTIONS
+//-----------------------------------------------------------
+
+@use "variables" as *;
+@use "sass:math";
+/// @function get-color($color, $shade)
+///
+/// Get a specific color from a colors map
+///
+/// @author Naim Zaaraoui
+/// @access public
+///
+/// @param {String} $color - Color's key name
+/// @param {Map} $shade - Color shade
+/// @param {Map} $scheme [$active-theme] - Colors Scheme
+///
+/// @return {Color} - Color value mapped to the `$color` key
+///
+/// @example scss - Usage
+///   .module {
+///     color: clr("primary", "100");
+///   };
+///
+/// @example css - CSS Output
+///   .module {
+///     color: hsl(216, 75%, 95%);
+///   };
+///
+@function get-clr($color, $shade, $scheme: $active-theme) {
+  $map: null;
+  @if $scheme == "light" {
+    $map: $light;
+  } @else if $scheme == "dark" {
+    $map: $dark;
+  } @else if $scheme == $active-theme {
+    $map: $active-theme;
+  } @else {
+    @error "OOps!! Unknown scheme #{$scheme}";
+  }
+
+  @if map-has-key($map, $color, $shade) {
+    @return map-get($map, $color, $shade);
+  } @else {
+    @warn "OOps!! Colors map does not have that color" + #{$color};
+    @return null;
+  }
+}
+
+//##################################################################//
+
+/// @function tint/shade-clr($color, $percentage)
+///
+/// Slightly lighten or darken a color
+///
+/// @author Naim Zaaraoui
+/// @access public
+///
+/// @param {Color} $color - Color to tint/shade
+/// @param {Number} $percentage - Percentage of `$color`
+///
+/// @return {Color} - Lighten/darken color
+///
+/// @example scss - Usage
+///   .module {
+///     background-color: shade-clr(#fff, 40%);
+///     color: tint-clr(#000, 40%);
+///   };
+///
+/// @example css - CSS Output
+///   .module {
+///     background-color: #999;
+///     color: #666;
+///   };
+///
+
+//** Tint a given color
+@function tint-clr($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+//** Shade a given color
+@function shade-clr($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+//##################################################################//
+
+/// @function calc-rem($size)
+///
+/// Converts a pixel value to a rem value,
+/// promoting consistent font sizing across different screen sizes and devices
+///
+/// @param {String} $size - The pixel value to be converted to rem
+/// @require $root-size
+///
+/// @return {String} - A rem value representing the converted pixel size as a string
+///
+
+@function calc-rem($size) {
+  $rem-size: calc($size / $root-size);
+  @return $rem-size * 1rem;
+}
+
+@function fs($font-size, $map-size: sm) {
+  @if map-has-key($type-scale, $map-size, $font-size) {
+    @return map-get($type-scale, $map-size, $font-size);
+  } @else {
+    @error "OOps!! $type-scale does not have this font-size";
+  }
+}
+
+@function size($size) {
+  @if map-has-key($sizes, $size) {
+    @return map-get($sizes, $size);
+  } @else {
+    @error "OOps!! $sizes does not have this size";
+  }
+}
+
+/// Convert pixels to ems
+///
+/// @param {Number} $px - Value to convert
+///
+/// @example scss
+/// p {font-size: px2em(16px)}
+///
+/// @returns {Number} - Value in em unit
+
+@function px2em($px) {
+  @if unitless($px) {
+    @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels.";
+    @return px2em($px * 1px);
+  }
+
+  // if $px is compatible with em units, then return value unchanged
+  @if comparable($px, 1em) {
+    @return $px;
+  }
+
+  @return calc(($px / 16px) * 1em);
+}
+
+/// Get a breakpoint's width
+///
+/// @param {String} name - Name of the breakpoint, one of $breakpoints
+///
+/// @example scss
+/// @media (width >= get-breakpoint-width(sm)) {}
+///
+/// @requires {Variable} $breakpoints
+///
+/// @return {Number} - Breakpoint width in pixels
+@function get-breakpoint-width($name, $breakpoints: $breakpoints) {
+  @if map-has-key($breakpoints, $name) {
+    @return map-get($breakpoints, $name);
+  } @else {
+    @warn "Breakpoint #{$name} wasn't found in $breakpoints.";
+    @return null;
+  }
+}
+
+/// List quick sort
+///
+/// @access private
+///
+/// @param {List} $list - List to sort
+///
+/// @returns {List} - Sorted List
+@function quick-sort($list) {
+  $less: ();
+  $equal: ();
+  $large: ();
+
+  @if length($list) > 1 {
+    // Find median value in the list
+    $seed: nth($list, math.ceil(math.div(length($list), 2)));
+
+    @each $item in $list {
+      @if $item == $seed {
+        $equal: append($equal, $item);
+      } @else if ($item < $seed) {
+        $less: append($less, $item);
+      } @else if($item > $seed) {
+        $large: append($large, $item);
+      }
+    }
+
+    @return join(join(quick-sort($less), $equal), quick-sort($large));
+  }
+
+  @return $list;
+}
+
+/// Sort a map by values (works with numbers only)
+///
+/// @access private
+///
+/// @param {Map} $map - Map to sort
+///
+/// @returns {Map} - Map sorted by value
+@function map-sort-by-value($map) {
+  $map-sorted: ();
+  $map-keys: map-keys($map);
+  $map-values: map-values($map);
+  $map-values-sorted: quick-sort($map-values);
+
+  // Reorder key/value pairs based on key values
+  @each $value in $map-values-sorted {
+    $index: index($map-values, $value);
+    $key: nth($map-keys, $index);
+    $map-sorted: map-merge(
+      $map-sorted,
+      (
+        $key: $value,
+      )
+    );
+
+    // Unset the value in $map-values to prevent the loop
+    // from finding the same index twice
+    // $map-values at the end will be: (0, 0, 0, ..., 0)
+    $map-values: set-nth($map-values, $index, 0);
+  }
+
+  @return $map-sorted;
+}

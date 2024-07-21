@@ -1,0 +1,287 @@
+// HELPERS
+//===========================================================
+//## MIXINS
+//-----------------------------------------------------------
+
+//*** Variables
+@use "variables" as *;
+//*** Functions
+@use "functions" as *;
+//*** pLaceholders
+@use "placeholders" as *;
+
+//** Media Queries Manager [!!DEPRECATED!!] **//
+///
+/// @mixin mq($breakpoint, $type)
+///
+/// Creates a media query based on the given breakpoint and type (min or max).
+///
+/// @author Ghostcode
+/// @access public
+///
+/// @param {string} $breakpoint - The name of a breakpoint from your `$breakpoints` map.
+/// @param {string} $type [min] - Either "min" or "max" to specify the width comparison.
+///
+/// @requires $breakpoints
+///
+/// @example scss - Usage
+///   .card {
+///     @include mq(sm) {
+///       display: grid;
+///     }
+/// @example css - CSS Output
+///   @media only screen and (min-width: 576px) {
+///     .card {
+///       display: grid;
+///     }
+///   }
+///
+
+// @mixin mq($size, $type: min) {
+//   @if map-has-key($breakpoints, $size) {
+//     $breakpoint: map-get($breakpoints, $size);
+//     @if $type == max {
+//       $breakpoint: $breakpoint - 0.063;
+//     }
+//     @media only screen and (#{$type}-width: $breakpoint) {
+//       @content;
+//     }
+//   } @else if type-of($size) == number {
+//     @if unitless($size) {
+//       @error "When using a number as a breakpoint make sure to include a unit"
+//     } @else {
+//     @media only screen and (#{$type}-width: $breakpoint) {
+//       @content;
+//     }
+//     }
+//   } @else {
+//     @warn "Oops!! Invalid breakpoint #{$breakpoint}";
+//   }
+// }
+
+//** Flexbox **//
+///
+/// @mixin flex ($justify, $align, $dir)
+///
+/// Defines a flexbox container
+///
+/// @author Ghostcode
+/// @access public
+///
+/// @param {String} $justify [null] - For justify-content property
+/// @param {String} $align [null] - For align-items property
+/// @param {String} $dir [null] - For flex-direction property
+///
+
+@mixin flex($justify: null, $align: null, $dir: null) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+
+  @content;
+}
+
+//** Dimensions **//
+///
+/// @mixin size ($width, $height)
+///
+/// Defines both width and height of an element
+///
+/// @author Ghostcode
+/// @access public
+///
+/// @param {Length} $width - Element's width
+/// @param {Length} $height [$width] - Element's height
+///
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+//** Pseudo Elements **//
+///
+/// @mixin pseudo($loc: before, $content: "", $pos: absolute, $top: null, $right: null, $bottom: null, $left: null, $z-index: -1)
+///
+/// Generates `::before` and `::after` pseudo elements for a given element
+///
+/// @author Ghostcode
+/// @access public
+///
+
+@mixin pseudo(
+  $loc: before,
+  $content: "",
+  $pos: absolute,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null,
+  $z-index: -1
+) {
+  position: relative;
+  &::#{$loc} {
+    content: $content;
+    position: $pos;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    z-index: $z-index;
+    // Add more styles
+    @content;
+  }
+}
+
+//** Positioning **//
+///
+/// @mixin center($dir)
+///
+/// Easily position an element in the center of its container
+///
+/// @author Ghostcode
+/// @access public
+///
+/// @param {String} $dir [both] - Centering direction
+///
+
+@mixin center($dir: both) {
+  position: absolute;
+
+  @if $dir == "vr" {
+    top: 50%;
+    transform: translateY(-50%);
+  } @else if $dir == "hr" {
+    left: 50%;
+    transform: translateX(-50%);
+  } @else if $dir == "both" {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+//** Font Mixin **//
+///
+/// @mixin font($weight)
+///
+/// Defines a specific font weight for an element with the default font-family
+///
+
+@mixin font($weight: $fw-normal, $family: $ff-primary) {
+  font-family: $family;
+  font-weight: $weight;
+}
+
+//** Consistent Font Sizes **//
+///
+/// @mixin font-size($size)
+///
+/// Sets a font size for an element in both pixels
+/// and rem units, promoting consistent scaling and accessibility
+///
+/// @param {String} $size - Desired font size in pixels
+/// @require {Function} calc-rem
+///
+
+@mixin font-size($size) {
+  font-size: $size; // Pixel fallback for browsers that don’t support rem (IE8 and below)
+  font-size: calc-rem($size);
+}
+
+///
+/// @mixin uppercase($fs)
+///
+/// Make a text uppercase and adjust line height based on given font size
+///
+/// @param {String} $fs - Font size to use in rem
+///
+
+@mixin uppercase($fs: 1rem) {
+  font-size: $fs;
+  text-transform: uppercase;
+
+  @if $fs < 2rem {
+    line-height: 1.4;
+  } @else if $fs >= 2rem and $fs < 3rem {
+    line-height: 1.2;
+  } @else if $fs >= 3rem and $fs < 5rem {
+    line-height: 1.1;
+  } @else {
+    line-height: 0.9;
+  }
+}
+
+@mixin ls($spacing: 2px) {
+  letter-spacing: $spacing;
+  margin-inline-end: -$spacing;
+}
+
+//** Headings **//
+
+@mixin heading($fs, $color: $heading-color-default) {
+  font-size: $fs;
+  color: $color;
+
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+  line-height: $heading-line-height;
+  text-transform: $heading-text-transform;
+  letter-spacing: $heading-letter-spacing;
+}
+
+//** Accessibility **//
+///
+/// @mixin visually-hidden
+///
+/// Hide an element visually while keeping it accessible to screen readers
+///
+
+@mixin visually-hidden() {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0, 0, 0, 0) !important; //
+  overflow: hidden !important;
+}
+
+//** Overlay **//
+///
+/// Generates an overlay for a given element
+///
+/// @author Naim Zaaraoui
+/// @access public
+///
+@mixin overlay(
+  $z-index: -1,
+  $background: rgb(0, 0, 0, 0.5),
+  $width: 100%,
+  $height: 100%,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null
+) {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    z-index: $z-index;
+    width: $width;
+    height: $height;
+    background: $background;
+    @content;
+  }
+}

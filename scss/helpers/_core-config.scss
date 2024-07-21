@@ -1,0 +1,155 @@
+// HELPERS
+//===========================================================
+//## CORE CONFIG
+//-----------------------------------------------------------
+
+/// This powers everything from utility class generation to breakpoints
+/// to enabling/disabling pre-built components/utilities.
+///
+///
+
+@use "variables" as *;
+
+$core-config: (
+  "namespace": (
+    "prefix": "",
+    "classes": false,
+    "css-vars": true,
+  ),
+  "css-vars": (
+    "clr": $light,
+    "ff": $font-families,
+    "fs": $type-scale,
+    "fw": $font-weights,
+    "size-rem": $sizes-rem,
+    "size-em": $sizes-em,
+    "radius": $border-radius,
+    "shadow": $shadows,
+    "gradient": $gradients,
+    "scheme-color": $scheme-color,
+    "transition": $transitions,
+    "themes": (
+      "default": (
+        "tokens": (
+          "clr": $active-theme,
+        ),
+      ),
+      "dark": (
+        "prefers-color-scheme": "dark",
+        "tokens": (
+          "clr": $dark,
+        ),
+      ),
+      "dark-toggle": (
+        "prefix": '[data-theme="dark"]',
+        "tokens": (
+          "clr": $dark,
+        ),
+      ),
+    ),
+  ),
+  "row-cols": (
+    "items": $row-cols,
+    "output": "responsive",
+    "property": "--row-cols",
+  ),
+  "start": (
+    "items": $start-cols,
+    "output": "responsive",
+    "property": "--start",
+  ),
+  "end": (
+    "items": $end-cols,
+    "output": "responsive",
+    "property": "--end",
+  ),
+  "col": (
+    "items": $col-widths,
+    "output": "responsive",
+    "property": "--col-width",
+  ),
+  "row-gap": (
+    "items": "size-rem",
+    "css-vars": true,
+    "output": "standard",
+    "property": (
+      "row-gap",
+      "--row-gap",
+    ),
+  ),
+  "col-gap": (
+    "items": "size-rem",
+    "css-vars": true,
+    "output": "standard",
+    "property": (
+      "column-gap",
+      "--col-gap",
+    ),
+  ),
+  "gap": (
+    "items": "size-rem",
+    "css-vars": true,
+    "output": "standard",
+    "property": (
+      "gap",
+      "--gap",
+    ),
+  ),
+  "align-items": (
+    "items": (
+      "center": "center",
+    ),
+    "output": "standard",
+    "property": "align-items",
+  ),
+
+  "bg": (
+    "items": "clr",
+    "css-vars": true,
+    "output": "standard",
+    "property": "background-color",
+  ),
+  "text": (
+    "items": "clr",
+    "css-vars": true,
+    "output": "standard",
+    "property": "color",
+  ),
+  "fs": (
+    "items": "fs",
+    "css-vars": true,
+    "output": "standard",
+    "property": "font-size",
+  ),
+  "fw": (
+    "items": "fw",
+    "css-vars": true,
+    "output": "standard",
+    "property": "font-weight",
+  ),
+  "text-align": (
+    "items": (
+      "center": "center",
+    ),
+    "output": "responsive",
+    "property": "text-align",
+  ),
+  "shadow": (
+    "items": "shadow",
+    "css-vars": true,
+    "output": "standard",
+    "property": "box-shadow",
+  ),
+  "breakpoints": (
+    "sm": "(width >= 36em)",
+    "md": "(width >= 48em)",
+    "lg": "(width >= 62em)",
+    "xl": "(width >= 75em)",
+    "xxl": "(width >= 87.5em)",
+  ),
+) !default;
+
+$css-vars: map-get($core-config, "css-vars");
+
+$generate-css-vars: true;
+$generate-utility-classes: true;

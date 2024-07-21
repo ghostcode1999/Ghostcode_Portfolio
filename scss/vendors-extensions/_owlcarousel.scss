@@ -1,0 +1,17 @@
+// Vendors Extensions
+// --------------------------------------------------------
+@use "../helpers" as *;
+
+/*-----------------------------------------------------------
+    # OwlCarousel Custom Styles 
+-----------------------------------------------------------*/
+
+.owl-carousel {
+  .owl-nav button.owl-prev,
+  .owl-nav button.owl-next,
+  button.owl-dot {
+    @include size(50px);
+    background: var(--clr-primary-100);
+    color: #fff;
+  }
+}

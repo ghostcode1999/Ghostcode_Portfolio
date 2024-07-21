@@ -1,0 +1,5 @@
+//*** Forward all pages partial files in one-single file to be @used
+//
+@forward "global";
+@forward "home";
+@forward "contact";

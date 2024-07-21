@@ -1,0 +1,55 @@
+// Vendors Extensions 
+//-----------------------------------------------------------
+
+/*=========================================================
+    #Bootstrap Custom Theme 
+===========================================================*/
+//
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../vendors/bootstrap/scss/functions";
+
+
+// 2. Include any default variable overrides here
+$primary: #4285f4;
+$secondary: #c7196d;
+$white: #f0ddff;
+$dark: #00002d;
+
+// $enable-grid-classes: false;
+// $enable-cssgrid : true;
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "../vendors/bootstrap/scss/variables";
+@import "../vendors/bootstrap/scss/variables-dark";
+
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import "../vendors/bootstrap/scss/maps";
+@import "../vendors/bootstrap/scss/mixins";
+@import "../vendors/bootstrap/scss/mixins/banner";
+@include bsBanner("");
+@import "../vendors/bootstrap/scss/root";
+
+// 6. Optionally include any other parts as needed
+@import "../vendors/bootstrap/scss/utilities";
+@import "../vendors/bootstrap/scss/reboot";
+@import "../vendors/bootstrap/scss/type";
+@import "../vendors/bootstrap/scss/images";
+@import "../vendors/bootstrap/scss/containers";
+@import "../vendors/bootstrap/scss/grid";
+@import "../vendors/bootstrap/scss/helpers";
+@import "../vendors/bootstrap/scss/buttons";
+@import "../vendors/bootstrap/scss/navbar";
+@import "../vendors/bootstrap/scss/nav";
+@import "../vendors/bootstrap/scss/offcanvas";
+@import "../vendors/bootstrap/scss/dropdown";
+@import "../vendors/bootstrap/scss/card";
+@import "../vendors/bootstrap/scss/forms";
+@import "../vendors/bootstrap/scss/pagination";
+@import "../vendors/bootstrap/scss/tooltip";
+@import "../vendors/bootstrap/scss/containers";
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "../vendors/bootstrap/scss/utilities/api";
+// 8. Add additional custom code here

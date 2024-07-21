@@ -1,0 +1,9 @@
+//*** Forward all helpers partial files in one-single file to be @used
+//
+@forward "variables";
+@forward "core-config";
+@forward "functions";
+@forward "placeholders";
+@forward "mixins";
+@forward "mq-manager";
+@forward "generator";

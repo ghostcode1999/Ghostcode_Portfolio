@@ -1,0 +1,98 @@
+// LAYOUT
+//=======================================================
+
+/*===========================================================
+  #LAYOUT: Macro-components laying the site
+===========================================================*/
+/*------------------
+    #GRID SYSTEM
+------------------*/
+
+@use "../helpers" as *;
+
+@layer layout {
+  .main-grid {
+    --col-count: #{$col-count};
+    --content-max-width: #{$content-max-width};
+    --row-cols: 1;
+    --col-width: 12;
+    --row-gap: #{$row-gap};
+    --col-gap: #{$col-gap};
+    --start: 1;
+
+    display: grid;
+    grid-template-columns:
+      minmax(1rem, 1fr)
+      repeat(
+        calc(var(--col-count) - 2),
+        minmax(0, calc(var(--content-max-width) / (var(--col-count) - 2)))
+      )
+      minmax(1rem, 1fr);
+
+    @include mq(sm) {
+      --content-max-width: #{$content-max-width-sm};
+    }
+    @include mq(md) {
+      --content-max-width: #{$content-max-width-md};
+    }
+    @include mq(lg) {
+      --content-max-width: #{$content-max-width-lg};
+    }
+    @include mq(xl) {
+      --content-max-width: #{$content-max-width-xl};
+    }
+    @include mq(xxl) {
+      --content-max-width: #{$content-max-width-xxl};
+    }
+  }
+
+  :is(.main-grid > *, .wrapper, .wrapper > *, .row) {
+    --end: calc(var(--start) * -1);
+
+    grid-column: var(--start) / var(--end);
+  }
+
+  .main-grid > *:not(.main-grid) {
+    --start: 1;
+
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  :is(.wrapper, .main-grid > *):is(.is-fixed) {
+    grid-template-columns: inherit;
+  }
+
+  :is(.wrapper > *, .row) {
+    --gap: var(--row-gap) var(--col-gap);
+    --start: 2;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(
+      var(--col-count),
+      minmax(0, calc(100% / var(--col-count)))
+    );
+    gap: var(--gap);
+
+    > * {
+      --start: auto;
+
+      grid-column: var(--start) / span var(--col-width);
+    }
+
+    .row-cols-auto &,
+    &.row-cols-auto {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+
+    :where(&:not(.main-grid > * > &)) {
+      --row-cols: 1;
+    }
+  }
+
+  [class*="row-cols"] > * {
+    --col-width: calc(var(--col-count) / var(--row-cols));
+  }
+}

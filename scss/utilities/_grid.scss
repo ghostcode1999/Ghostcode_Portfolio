@@ -1,0 +1,18 @@
+// UTILITIES
+//===========================================================
+/*------------------
+    #GRID
+------------------*/
+
+@use "helpers" as *;
+
+@layer utilities {
+  .#{$prefix}grid {
+    --layout-count: 2;
+    --layout-gap: 0;
+
+    display: grid;
+    grid-template-columns: repeat(var(--layout-count), 1fr);
+    gap: var(--_layout-gap, $grid-gap);
+  }
+}

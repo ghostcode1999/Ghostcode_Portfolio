@@ -1,0 +1,67 @@
+// BASE
+//===========================================================
+/*------------------
+    # GENERAL STYLES
+------------------*/
+
+@use "helpers" as *;
+
+@layer base {
+  /* Set core body defaults */
+  body {
+    //** As a best practice, apply a default `background-color`.
+    background: $body-background-color;
+    color: $body-text-color;
+    font-family: $body-font-family;
+    font-size: $body-font-size;
+    font-weight: $body-font-weight;
+    line-height: 1.6;
+    overflow: hidden
+  }
+
+  // Show / Hide breakpoints viewer
+  @if length($show-breakpoints) > 0 {
+    // @include show-breakpoints;
+  }
+
+  /* Links general styling */
+  a {
+    color: $link-color;
+    transition: $transition-400;
+
+    &:is(:hover, :focus-visible) {
+      color: $link-color-hover;
+    }
+  }
+
+  /* Paragraphs */
+  p {
+    word-spacing: 1px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $gradient-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $clr-primary-500;
+  }
+
+  /* Selection */
+  ::selection {
+    color: $clr-primary-400;
+    background: $clr-neutral-900;
+  }
+
+  /* Placeholder */
+  ::placeholder {
+    color: var(--clr-neutral-300);
+    font-weight: 500;
+    font-family: inherit;
+  }
+}

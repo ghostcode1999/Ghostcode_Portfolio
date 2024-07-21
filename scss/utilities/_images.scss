@@ -1,0 +1,51 @@
+// UTILITIES
+//===========================================================
+/*------------------
+    #IMAGES
+------------------*/
+
+@use "helpers" as *;
+
+.blur-load {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: hsla(0 0 100% / 0.15);
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+
+  &.loaded {
+    &::before {
+      content: none;
+    }
+
+    img {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes blur-loading {
+  0% {
+    background-color: hsla(0 0 100% / 0);
+  }
+
+  50% {
+    background-color: hsla(0 0 100% / 0.15);
+  }
+
+  100% {
+    background-color: hsla(0 0 100% / 0);
+  }
+}

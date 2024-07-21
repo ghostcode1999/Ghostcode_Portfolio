@@ -1,0 +1,71 @@
+// HELPERS
+//## GENERATOR
+//===========================================================
+//### GENERATE CSS
+//-----------------------------------------------------------
+
+@use "get-namespace" as *;
+
+/// The final CSS generator that takes the process params and generates
+/// a CSS utility.
+///
+/// @param {string} $selector - The CSS selector that should be generated
+/// @param {string} $property - The CSS property that this utility affects
+/// @param {map} $items - The collection of utility items to generate classes for
+/// @param {boolean} $use-css-vars - this is to tell generate-css to use either a value or a CSS Variable
+/// @param {string} $item-key - the key for items which is used for tying each CSS var up to the item value
+///
+
+@mixin generate-css($selector, $property, $items, $use-css-vars, $item-key) {
+  $var-namespace: get-namespace("css-vars");
+
+  @each $key-name, $key-value in $items {
+    @if (type-of($key-value) == "map") {
+      @each $key, $value in $key-value {
+        #{"." + $selector + "-" + $key-name + "-" + $key} {
+          @if (type-of($property) == "list" and length($property) == 1) {
+            @each $prop in $property {
+              @if ($use-css-vars) {
+                #{$property}: var(
+                  --#{$var-namespace + $item-key + "-" + $key-name + "-" + $key}
+                );
+              } @else {
+                #{$property}: #{$value};
+              }
+            }
+          } @else {
+            @if ($use-css-vars) {
+              #{$property}: var(
+                --#{$var-namespace + $item-key + "-" + $key-name + "-" + $key}
+              );
+            } @else {
+              #{$property}: #{$value};
+            }
+          }
+        }
+      }
+    } @else {
+      #{"." + $selector + "-" + $key-name} {
+        @if (type-of($property) == "list" and length($property) > 1) {
+          @each $prop in $property {
+            @if ($use-css-vars) {
+              #{$prop}: var(
+                --#{$var-namespace + $item-key + "-" + $key-name}
+              );
+            } @else {
+              #{$prop}: #{$key-value};
+            }
+          }
+        } @else {
+          @if ($use-css-vars) {
+            #{$property}: var(
+              --#{$var-namespace + $item-key + "-" + $key-name}
+            );
+          } @else {
+            #{$property}: #{$key-value};
+          }
+        }
+      }
+    }
+  }
+}

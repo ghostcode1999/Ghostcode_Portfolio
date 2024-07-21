@@ -1,0 +1,267 @@
+<hr>
+<h2>Title: Guidelines
+description: Learn about the guiding principles, strategies and techniques used to build and maintain this architecture so you can more easily customize and extend it yourself.</h2>
+<h1>Introduction</h1>
+<p>This is a Template based on the 7-1 architecture and <a href="https://sass-guidelin.es">Sass Guidelines</a> writing conventions and best practices.</p>
+<p>This styleguide is <strong>strongly opinionated</strong>, it may or may not suit your project preferences <em>SO</em> feel free to pick only what you need or to ignore it completely and make your own suitable styleguide.</p>
+<h1>Folder structure</h1>
+<p>The Sass architecture is made according to a <em>5-1 pattern</em> folder structure:
+5 basic folders, 1 file.</p>
+<p>Basically, it has 5 different folders(<strong>Partials</strong>) and a single file at the root level(<code>main.scss</code>) which imports them all to be compiled into a single CSS stylesheet.</p>
+<p>We think that the 5 basic partials are the only needed folders for a basic project.
+For more complex projects, we have added 3 additional partials: <code>themes</code>, <code>vendors</code> and <code>vendors-extensions</code>.</p>
+<p>We have included a <code>README.md</code> file within each partial folder that describe extensively the purpose of each one.</p>
+<p>Folders in the <code>sass/</code> folder have an <code>_index.scss</code> file that allows to load from a single entrypoint all modules if needed with the help of the <code>@forward</code> rule, using one single rule <code>@use &#39;folder_name&#39;;</code> in our <code>main.scss</code> file.</p>
+<pre><code>project-name/
+├── sass/
+│   ├── base/
+|   |    ├── _resets.scss               # Reset/Normalize All Elements
+|   |    ├── _typography.scss           # Typography Rules(font-size in each
+|   |    |                                 breakpoint... etc.)
+|   |    ├── _utilities.scss            # Classes with pre-defined properties
+|   |    ├── _base.scss                 # @forward All Partial Files in base
+|   |    |                                Folder (to be able to import the whole
+|   |    |                                folder across other files)
+|   |    └── ...                        # Etc...
+│   ├── components/
+|   |    ├── _buttons.scss              # Buttons
+|   |    ├── _carousel.scss             # Carousel
+|   |    ├── _dropdown.scss             # Dropdown
+|   |    ├── _index.scss                # @forward All Partial Files in components
+|   |    |                                Folder (to be able to import the whole
+|   |    |                                folder across other files)
+|   |    └── ...                        # Etc...
+|   ├── helpers/
+|   |   ├── _variables.scss             # Sass Variables, Maps, Lists
+|   |   ├── _functions.scss             # Sass Functions
+|   |   ├── _mixins.scss                # Sass Mixins to Include
+|   |   ├── _placeholders.scss          # Sass Placeholders to Extend
+|   |   ├── _index.scss                 # @forward All Partial Files in helpers
+|   |   |                                Folder (to be able to import the whole
+|   |   |                                folder across other files)
+|   |   └── ...                         # Etc...
+│   ├── layout/
+|   |    ├── _header.scss               # Header
+|   |    ├── _sidebar.scss              # Sidebar
+|   |    ├── _footer.scss               # Footer
+|   |    ├── _grid.scss                 # Grid System
+|   |    ├── _index.scss                # @forward All Partial Files in layout
+|   |    |                                Folder (to be able to import the whole
+|   |    |                                folder across other files)
+|   |    └── ...                        # Etc...
+│   ├── pages/
+|   |    ├── _home.scss                 # Home Page Specific Styles
+|   |    ├── _about.scss                # About Page Specific Styles
+|   |    ├── _contact.scss              # Contact Page Specific Styles
+|   |    ├── _index.scss                # @forward All Partial Files in pages
+|   |    |                                Folder (to be able to import the whole
+|   |    |                                folder across other files)
+|   |    └── ...                        # Etc...
+│   ├── themes/
+|   |    ├── _default.scss              # Default Theme
+|   |    ├── _admin.scss                # Admin Theme
+|   |    ├── _index.scss                # @forward All Partial Files in themes
+|   |    |                                Folder (to be able to import the whole
+|   |    |                                folder across other files)
+|   |    └── ...                        # Etc...
+│   ├── vendors/
+|   |    ├── bootstrap                  # Bootstrap Framework
+|   |    |   └── _bootstrap.scss
+|   |    ├── owlcarousel                # OwlCarousel Library
+|   |    |   └── _fontawesome.scss
+|   |    └── ...                        # Etc...
+│   ├── vendors-extensions/
+|   |    ├── custom_bootstrap.scss      # Custom Bootstrap Theme
+|   |    ├── _owlcarousel.scss          # Custom OwlCarousel
+|   |    ├── _index.scss                # @forward All Partial Files in vendors-
+|   |    |                                extensions Folder (to be able to import
+|   |    |                                the whole folder across other files)
+|   |    └── ...                        # Etc...
+|   └── main.scss                       # Main Sass File to be Compiled and Linked
+|                                          in all Pages HTML Files
+└── ...
+</code></pre>
+<h2>Partial Folders</h2>
+<ul>
+<li>Files naming follow the <strong>hyphen-delimited convention</strong>.</li>
+<li>All partials files names start with an UNDERSCORE_: this prefix tells Sass to not generate the corresponding CSS output for this file (will not be compiled into CSS).</li>
+<li>Each partial folder has an <code>_index.scss</code> file used to forward all the folder files into a single file that will be imported by the main file (or other) in one shot without need to import each of the partial files. In other words, this file will contain only <code>@forward</code> rules that help forward your files as a folder across different codebase files.</li>
+</ul>
+<h2>Main Sass File</h2>
+<p>The main Sass file <code>main.scss</code> should be the only <code>.scss</code> file not to begin with an underscore, so that it compiles into normal CSS. This file should not contain anything but <code>@use</code> rule and comments.It should contain all your imported partials folders using the <code>@use</code> rule and its compiled css file should be linked in all pages of your application (files in the <code>pages/</code> folder can be also made to be compiled to link each compiled CSS stylesheet to its respective page but that&#39;s not recommended due to resulted bad network performances).</p>
+<p><strong>Importing Order</strong>
+Partials folders should be imported in the following order:</p>
+<ol>
+<li>helpers/</li>
+<li>base/</li>
+<li>components/</li>
+<li>layout/</li>
+<li>pages/</li>
+<li>themes/</li>
+<li>vendors-extensions/</li>
+</ol>
+<p><strong>TIP</strong> When importing Sass files, file extensions and leading underscores are omitted.</p>
+<h2>Custom Vendor Theme File</h2>
+<p>Because it&#39;s strongly recommended to avoid modifying vendor&#39;s core files, we think that creating your own stylesheet that imports vendor core file so you can modify and extend it is a good approach.</p>
+<p>In your <code>custom.scss</code> you will import needed vendor source Sass files and begin to modify any of the Sass variables and maps.This custom file will then be compiled to produce a CSS custom stylesheet of respective vendor that will be included in your HTML files instead of the vendor&#39;s core file.</p>
+<p>Vendors core files are placed in <code>vendors</code> folder, customized vendors files are placed in <code>vendors-extensions</code> folder.</p>
+<p><em>For more details</em> <code>vendors-extensions/README.md</code>.</p>
+<h1>Guidelines</h1>
+<p>We have attached some notes within each partial about good practices to write maintainable, scalable and clean Sass.
+Our approach has a major core goal:</p>
+<ul>
+<li>Keep Sass as simple as it can be (<strong>KISS</strong> principle: Keep it Simple, Stupid) even if it goes against <strong>DRY</strong> principle (Don&#39;t Repeat Yourself) in some circumstances.</li>
+</ul>
+<p>Sass should not get much more complex than regular CSS to keep code more organized, more stuctured and easier to maintain.</p>
+<h2>Syntax</h2>
+<ul>
+<li>An indentation is made of two (2) spaces, no tabs.</li>
+<li>Lines should be, as much as possible, shorter than 80 characters: feel free to split them into several lines when necessary.</li>
+<li>CSS should be properly written, possibly following the CSS Guidelines from Harry Roberts.</li>
+<li>Whitespace is free, use it to separate items, rules and declarations (but keep it a meaningful use).</li>
+<li>Do not hesitate to leave empty lines, it never hurts.</li>
+</ul>
+<h3>Strings</h3>
+<ul>
+<li>Declaring the @charset directive on top of the stylesheet is highly recommended t enforce UTF-8 encoding (No character of any kind before it).</li>
+<li>Strings including URLs should be quoted (unless applied as CSS identifers = Specific CSS values).</li>
+</ul>
+<h3>Numbers</h3>
+<ul>
+<li>Leading zeros should be added (to improve readability) but trailing zeros (0) should be omitted(Sass makes no distinction between numbers, integers and floats).</li>
+<li>A 0 length value should never have a unit (only lengths, be aware of time properties).</li>
+<li>Units manipulation should be considered as arithmetic operations, not string operations.</li>
+</ul>
+<ul>
+<li>To add a unit to a number, multiply it by 1 unit (10 * 1px)</li>
+<li>To remove a unit of a value, divide it by one unit of <em>its kind</em> (10px / 1px)</li>
+</ul>
+<ul>
+<li>Top-level calculations should be wrapped in parentheses (to improve readability and prevent some unexpected output by forcing Sass to evaluate the content of the parentheses).</li>
+</ul>
+<h3>Colors</h3>
+<ul>
+<li>Colors should be expressed in HSL when possible, then RGB, then hexadecimal (in a lowercase and shortened form).</li>
+<li>Color keywords should be avoided (can be non perfectly semantic and confused).</li>
+<li>When lightening or darkening a color , using <code>mix()</code> rather than <code>lighten()</code> and <code>darken()</code> is recommended. We have already built two helpers functions <code>tint()</code> and <code>shade()</code> within <code>_functions.scss</code> to do the job.</li>
+</ul>
+<h3>Lists</h3>
+<ul>
+<li>Can be inlined or multilines (necessarily if too long to fit on an 80-character line).</li>
+<li>If multilines, it should have a trailing comma, not if inlined.</li>
+<li>Unless used as a direct mapping to space-separated CSS values, lists should be separated with commas.</li>
+<li>Should always be wrapped in parentheses (to improve readability).</li>
+<li>When adding items to a list, always use the provided API (not manually).</li>
+</ul>
+<h3>Maps</h3>
+<ul>
+<li>A space should be added after the assignment colon <code>:</code>.</li>
+<li>The opening brace should be on the same line of the assignment colon <code>: (</code>.</li>
+<li>Maps containing more than a single pair are written on several lines.</li>
+<li>Keys should be quoted if they are strings (99% of the cases).</li>
+<li>Each key-value pair should be placed on its own new line.</li>
+<li>A comma <code>,</code> is added at the end of each pair.</li>
+<li>The last pair should have a trailing comma (to make it easier to add, remove or reorder pairs).</li>
+<li>The closing brace <code>)</code> should be on its new line.</li>
+<li>No space or new line between closing brace and semi-colon.</li>
+<li>Avoid using complex data types (like maps) as map keys.</li>
+</ul>
+<pre><code>$breakpoints: {
+    &quot;sm&quot;: 768px,
+    &quot;md&quot;: 992px,
+    &quot;lg&quot;: 1200px,
+    &quot;xl&quot;: 1400px,
+};
+</code></pre>
+<h3>CSS Ruleset</h3>
+<ul>
+<li><p>Related selectors on the same line, unrelated selectors on new lines.</p>
+</li>
+<li><p>A single space between the last selector and the rule opening brace.</p>
+</li>
+<li><p>Each declaration should be in its own new line.</p>
+</li>
+<li><p>A single space after the declaration colon.</p>
+</li>
+<li><p>A trailing semi-colon at the end of all declarations.</p>
+</li>
+<li><p>The rule closing brace on its own new line.</p>
+</li>
+<li><p>No new line before the rule closing brace.</p>
+</li>
+<li><p>A new line after the rule closing brace.</p>
+</li>
+<li><p>Local variables are declared before any other declaration, and spaced from others by a new line.</p>
+</li>
+<li><p>Mixin calls with no <code>@content</code> come before any declaraton.</p>
+</li>
+<li><p>Nested selectors always come after a new line.</p>
+</li>
+<li><p>Mixin calls with <code>@content</code> come after any nested selector.</p>
+</li>
+</ul>
+<pre><code>.card .card-header,
+.modal {
+    $length: 20rem;
+
+    @include circle;
+    @include size($length);
+    display: flex;
+    align-items: center;
+
+    &amp;:hover {
+        background-color: #fff;
+    }
+
+    @include media-min(&quot;sm&quot;) {
+        display: block;
+    }
+}
+</code></pre>
+<h3>Declaration Sorting</h3>
+<p>There are 2 famous systems for declaration sorting: <em>alphabetical</em> or <em>by type</em>.
+We think that sorting by type is more consistent and make the code more organized and easier to read.
+But any of the two systems can be used as long as it is consistent.
+According to our approach, properties are organized in the following order:</p>
+<ol>
+<li>Position</li>
+<li>Box</li>
+<li>Visuals</li>
+<li>Text(Typography)</li>
+<li>Other</li>
+</ol>
+<p><strong>Position</strong>: Properties that affect the position of the box: <code>position</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, <code>float</code> and so on.
+<strong>Box</strong>: Properties that affect the display and dimensions of the box: <code>display</code>, <code>width</code>, <code>height</code>, <code>padding</code>, <code>margin</code>, <code>border</code> and so on.
+<strong>Visuals</strong>: Properties that affect the visuals of the box: <code>background</code>, <code>color</code>,<code>opacity</code> and so on.
+<strong>Text</strong>: Properties that affect the display of the text: <code>font-size</code>, <code>font-weight</code>, <code>text-transform</code>, <code>text-align</code> and so on.
+<strong>Other</strong>: Any property that doesn&#39;t belong to the above groups.</p>
+<h3>Selector Deep Nesting</h3>
+<p>Because selector nesting may makes code more difficult to read our approach consists of:</p>
+<ul>
+<li>Avoid selector nesting as much as possible.</li>
+<li>If nesting is needed respect the <em>Inception</em> rule which advised against nesting more than 3 levels deep.</li>
+<li>Use selector nesting for pseudo-classes, pseudo-elements and component state classes (To keep everything related to a component at the same place).</li>
+<li>If the element is contained within another specific element, you can still using nesting (to preserve the idea of components).</li>
+<li>Media queries can also be nested inside their relevant selector.</li>
+</ul>
+<h2>Naming Conventions</h2>
+<ul>
+<li>Whenever possible, use the <strong>lowercase hyphen-delimited</strong> convention.</li>
+<li>If your Sass code is intended to be distributed (library, framework, ...), it&#39;s recommended to namespace all you variables, functions, mixins and placeholders to avoid conflicts with others code.</li>
+</ul>
+<h2>Comments and documentation</h2>
+<ul>
+<li>CSS is a tricky language; do not hesitate to write very extensive comments about things that look (or are) fishy.</li>
+<li>Every variable, function, mixin and placeholder that is intended to be reused all over the codebase should be documented as part of the global API using <code>SassDoc</code>.</li>
+<li>Triple slashes <code>///</code> are required for documentation.</li>
+<li>You will find some fully documented mixins and functions in our partials.</li>
+</ul>
+<h2>Warnings and Errors</h2>
+<ul>
+<li><code>@error</code> stops the compilation, <code>@warn</code> does not.</li>
+<li>Both directives display a message in the output stream handy for debugging.</li>
+</ul>
+<h2>!default flag</h2>
+<ul>
+<li>The !default flag tells the compiler to set the value of the variable only if the value is not defined.</li>
+</ul>

@@ -1,0 +1,138 @@
+// COMPONENTS
+//==========================================================
+/*---------------------
+    #PRIMARY NAVIGATION
+----------------------*/
+
+@use "helpers" as *;
+
+.#{$prefix}primary-nav {
+  --nav-gap: #{$navigation-gap};
+  --nav-color: #{$navigation-color};
+  --nav-color-hover: #{$navigation-color-hover};
+  --nav-font-size: #{$navigation-font-size};
+  --nav-font-weight: #{$navigation-font-weight};
+  --nav-text-transform: #{$navigation-text-transform};
+
+  justify-content: space-between;
+  padding-block: $em-3;
+}
+
+:is(.primary-nav, .nav-list) {
+  display: flex;
+  align-items: center;
+}
+
+.#{$prefix}nav-list {
+  justify-content: center;
+  gap: var(--nav-gap);
+  font-size: var(--nav-font-size);
+  font-weight: var(--nav-font-weight);
+
+  @include mq($to: sm) {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 99;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: min(230px, 100%);
+    height: 100dvh;
+    overflow-y: auto;
+    padding: 4em 2em 2em;
+    border-inline-end: 1px solid $clr-neutral-200;
+    background-color: $clr-neutral-900;
+    transition: $transition-400;
+
+    translate: -100% 0;
+  }
+
+  :has(.nav-toggler.is-active) & {
+    translate: 0 0;
+  }
+}
+
+.nav-list a {
+  position: relative;
+  display: inline-block;
+  padding-block-end: $em-3;
+  color: var(--nav-color);
+  text-transform: var(--nav-text-transform);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-block-end: 2px;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 2px;
+    transform-origin: center;
+    background: $clr-primary-500;
+    transition: $transition-400;
+
+    scale: 0 1;
+  }
+
+  &:is(:hover, :focus-visible, .is-active) {
+    color: var(--nav-color-hover);
+
+    &::after {
+      scale: 1 1;
+    }
+  }
+}
+
+.nav-close-btn {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  color: inherit;
+  font-size: $em-6;
+  transition: $transition-250;
+
+  &:is(:hover, :focus-visible) {
+    color: $clr-accent-200;
+  }
+
+  @include mq(sm) {
+    display: none;
+  }
+}
+
+.nav-toggler {
+  @include mq(sm) {
+    display: none;
+  }
+
+  span {
+    display: block;
+    width: 10px;
+    height: 3px;
+    border-radius: $em-2;
+    background-color: $clr-neutral-100;
+    transition: $transition-250;
+
+    &:nth-of-type(2) {
+      width: 20px;
+      margin-block: 4px;
+    }
+    &:nth-of-type(3) {
+      margin-inline-start: auto;
+    }
+  }
+
+  &.is-active span {
+    &:nth-of-type(1) {
+      transform: translate(1.5px, 3.5px) rotate(45deg);
+    }
+
+    &:nth-of-type(2) {
+      transform: rotate(-45deg);
+    }
+
+    &:nth-of-type(3) {
+      transform: translate(-1.5px, -3.5px) rotate(45deg);
+    }
+  }
+}

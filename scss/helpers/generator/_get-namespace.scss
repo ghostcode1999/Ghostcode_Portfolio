@@ -1,0 +1,44 @@
+// HELPERS
+//## GENERATOR
+//===========================================================
+//### GET NAMESPACE
+//-----------------------------------------------------------
+
+@use "../core-config" as *;
+
+/// Get the namespace for the specified setting
+/// @param {string} $namespace-type - Which type of object needs namespaced.  One of 'classes' or 'css-vars'
+///
+@function get-namespace($namespace-type) {
+  $namespace-defaults: (
+    "prefix": "",
+    "classes": "class",
+    "css-vars": false,
+  );
+
+  $namespace-settings: map-get($core-config, "namespace");
+
+  @if ($namespace-settings == null) {
+    @return "";
+  }
+
+  $namespace-settings-merged: map-merge(
+    $namespace-defaults,
+    $namespace-settings
+  );
+
+  $prefix: map-get($namespace-settings-merged, "prefix");
+
+  $should-display-prefix: map-get($namespace-settings-merged, $namespace-type);
+  $is-setting-boolean: type-of($should-display-prefix) == bool;
+
+  @if ($should-display-prefix and $is-setting-boolean) {
+    // If the specified setting is boolean true, return the global prefix
+    @return $prefix;
+  } @else if ($should-display-prefix and $is-setting-boolean == false) {
+    // If the specified setting is something other than a boolean, use that as the prefix for this setting
+    @return $should-display-prefix;
+  } @else {
+    @return "";
+  }
+}

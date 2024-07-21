@@ -1,0 +1,63 @@
+// LAYOUT
+//==========================================================
+/*------------------
+    #PRIMARY FOOTER
+------------------*/
+
+@use "helpers" as *;
+
+@layer layout {
+  .#{$prefix}primary-footer {
+    position: relative;
+    font-size: $fs-300;
+  }
+
+  .footer-bg-gradient {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .primary-footer-top {
+    padding-block: $em-8;
+    border-block-end: 1px solid $clr-neutral-100;
+  }
+
+  .primary-footer__title {
+    margin-block-end: $rem-8;
+  }
+
+  :is(.primary-footer__nav-list a, .primary-footer__social-list, .primary-footer__social-list a) {
+    display: flex;
+    align-items: center;
+    gap: $rem-2;
+  }
+
+  .primary-footer__nav-list {
+    a {
+      position: relative;
+
+      &::before {
+        content: "\f138";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+      }
+    }
+  }
+
+  .primary-footer__social-list {
+    a {
+      justify-content: center;
+      width: $rem-8;
+      aspect-ratio: 1;
+      background: $gradient-100;
+    }
+  }
+
+  .primary-footer-copyright {
+    padding: $em-4;
+    text-align: center;
+  }
+}

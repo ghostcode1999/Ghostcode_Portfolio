@@ -1,0 +1,36 @@
+// LAYOUT
+//==========================================================
+/*------------------
+    #SIDEBAR
+------------------*/
+
+@use "helpers" as *;
+
+@layer layout {
+  .#{$prefix}sidebar {
+    --layout-gap: 0;
+    --layout-basis: 0;
+    --layout-inline-size: 60%;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--layout-gap);
+    align-items: stretch;
+  }
+
+  .sidebar > * {
+    flex-basis: var(--layout-basis);
+    flex-grow: 1;
+    min-width: min(100%, var(--layout-basis));
+  }
+
+  .sidebar[data-left] > :last-child,
+  .sidebar[data-right] > :first-child {
+    flex-basis: 0;
+    flex-grow: 999;
+
+    /* wraps when content becomes less than X */
+    /* similar to min-width in horizontal reading direction */
+    min-inline-size: var(--layout-inline-size);
+  }
+}

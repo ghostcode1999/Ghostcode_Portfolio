@@ -1,0 +1,60 @@
+// LAYOUT
+//==========================================================
+/*------------------
+    #PRIMARY HEADER
+------------------*/
+
+@use "helpers" as *;
+
+@layer layout {
+  .#{$prefix}primary-header {
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+    color: $primary-header-color;
+    transition: $transition-400;
+
+    body.is-scrolled & {
+      background: linear-gradient(
+        to right,
+        rgba(144, 51, 153, 0.6),
+        rgb(11, 7, 197, 0.6)
+      );
+      backdrop-filter: blur(15px);
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    z-index: 98;
+    background-color: hsla(0 0% 0% / 0.95);
+    transition: $transition-400;
+
+    opacity: 0;
+    pointer-events: none;
+
+    :has(.nav-toggler.is-active, .popup.is-shown) & {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: $em-4;
+
+    @include mq($to: sm) {
+      flex-direction: column;
+    }
+
+    p {
+      @include mq($to: sm) {
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+// HELPERS
+//## GENERATOR
+//===========================================================
+//### GENERATE UTILITY CLASSES
+//-----------------------------------------------------------
+
+@use "../core-config" as *;
+@use "cycle" as *;
+
+/// Generate utility classes
+
+@mixin generate-utility-classes() {
+  @layer utilities {
+    /// Run the standard cycle first
+    @include cycle("", false);
+
+    /// For each breakpoint, generate a prefix and run the cycle
+    @each $key, $value in map-get($core-config, "breakpoints") {
+      $prefix: #{"-" + $key};
+      $is-breakpoint: true;
+  
+      @media #{$value} {
+        @include cycle($prefix, $is-breakpoint);
+      }
+    }
+  }
+  }
+

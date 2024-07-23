@@ -152,6 +152,12 @@ $(function () {
     mirror: false,
   });
 
+  // #Initialize portfolio GLightbox
+  //---------------------------------
+  const glightbox = GLightbox({
+    selector: ".work-glightbox",
+  });
+
   /* #Hide / Show <welcomePopup>
   -----------------------------*/
   setTimeout(() => welcomePopup.addClass("is-shown"), 5000);
